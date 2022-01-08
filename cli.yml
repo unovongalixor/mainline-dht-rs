@@ -1,0 +1,12 @@
+name: MainlineDHT 
+version: "0.01"
+author: Simon Bursten <smnbursten@gmail.com>
+about: Does awesome things
+args:
+    - magnet_uri:
+        short: m
+        long: magnet_uri
+        value_name: magnet_uri
+        help: magnet link to crawl
+        takes_value: true
+        required: true
