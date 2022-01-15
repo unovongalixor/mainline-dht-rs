@@ -8,7 +8,6 @@ use ansi_term::Style;
 use queries::PingRequest;
 use std::net::UdpSocket;
 use std::time::Duration;
-use serde_bencoded;
 
 
 fn main() {
@@ -26,7 +25,7 @@ fn main() {
     ];
 
     let ping_request = PingRequest::new(String::from("abcdefghij0123456789")); 
-    let string = serde_bencoded::to_vec(&ping_request).unwrap();
+    let string = ping_request.to_bencode(); 
 
     println!("{}", std::str::from_utf8(&string).unwrap());
 
