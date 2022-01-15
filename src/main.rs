@@ -1,6 +1,7 @@
-pub mod packets;
-
 #[macro_use] extern crate clap;
+
+pub mod packets;
+pub mod routing_table;
 
 use clap::App;
 use ansi_term::Colour;
@@ -9,6 +10,7 @@ use std::net::UdpSocket;
 use std::time::Duration;
 use packets::packet::Packet;
 use packets::ping::Ping;
+use routing_table::RoutingTableNode;
 
 
 fn main() {
@@ -19,7 +21,7 @@ fn main() {
     let matches = App::from_yaml(yaml).get_matches();
     let magnet_uri = matches.value_of("magnet_uri").unwrap();
     println!("Crawling the DHT for torrent {}", Style::new().bold().paint(magnet_uri));
-
+    
     println!("pinging bootstrap nodes..");
     let bootstrap_servers = vec![
         String::from("router.bittorrent.com:6881")
@@ -42,4 +44,6 @@ fn main() {
         println!("{}", String::from_utf8_lossy(&recv_buff[0..n]));
         return
     }
+
+    let _table = RoutingTableNode::new();
 }

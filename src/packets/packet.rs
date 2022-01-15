@@ -1,6 +1,5 @@
 use std::net::UdpSocket;
 
-// Packet
 /// Packet defines common behavior for all message packets
 /// like functions for bencoding data and sending a packet via a UdpSocket
 pub trait Packet {

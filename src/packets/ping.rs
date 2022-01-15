@@ -11,7 +11,7 @@ pub struct Ping {
 }
 
 impl Packet for Ping {
-    fn new(id: String) -> Self {
+    fn new(id: String) -> Ping {
         let r = Ping {
             t: String::from("aa"),
             y: String::from("q"),
