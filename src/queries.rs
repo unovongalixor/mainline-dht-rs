@@ -1,27 +1,16 @@
 use serde::{Deserialize, Serialize};
 use std::net::UdpSocket;
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct PingRequest {
-    pub t: String,
-    pub y: String,
-    pub q: String,
-    pub a: PingRequestPayload
-}
+// RequestPacket
+/// RequestPacket defines common behavior for all message packets
+/// like functions for bencoding data and sending a packet via a UdpSocket
+pub trait RequestPacket {
+    fn new(id: String) -> Self; 
+    fn to_bencode(&self) -> Vec<u8>;    
 
-impl PingRequest {
-    pub fn new(id: String) -> PingRequest {
-        let r = PingRequest {
-            t: String::from("aa"),
-            y: String::from("q"),
-            q: String::from("ping"),
-            a: PingRequestPayload::new(id)
-        };
-        return r;
-    }
-
-    pub fn send_to(&self, socket: UdpSocket, addr: String) {
+    fn send_to(&self, socket: UdpSocket, addr: String) {
         let data: Vec<u8> = self.to_bencode();
+        println!("{}", std::str::from_utf8(&data).unwrap());
         match socket.send_to(&data, addr.clone()) {
             Ok(n) => {
                 if n != data.len() {
@@ -34,8 +23,29 @@ impl PingRequest {
             }
         }
     }
+}
 
-    pub fn to_bencode(&self) -> Vec<u8> {
+// PingRequest
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PingRequest {
+    pub t: String,
+    pub y: String,
+    pub q: String,
+    pub a: PingRequestPayload
+}
+
+impl RequestPacket for PingRequest {
+    fn new(id: String) -> Self {
+        let r = PingRequest {
+            t: String::from("aa"),
+            y: String::from("q"),
+            q: String::from("ping"),
+            a: PingRequestPayload::new(id)
+        };
+        return r;
+    }
+
+    fn to_bencode(&self) -> Vec<u8> {
         serde_bencoded::to_vec(self).unwrap()
     }
 }
@@ -51,9 +61,11 @@ impl PingRequestPayload {
     }
 }
 
+// tests
 #[cfg(test)]
 mod tests {
     use crate::queries::PingRequest;
+    use crate::queries::RequestPacket;
 
     #[test]
     fn test_ping_request_fields() {
