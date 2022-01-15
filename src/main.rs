@@ -1,14 +1,14 @@
-pub mod request_packets;
+pub mod packets;
 
 #[macro_use] extern crate clap;
 
 use clap::App;
 use ansi_term::Colour;
 use ansi_term::Style;
-use request_packets::ping_request::PingRequest;
 use std::net::UdpSocket;
 use std::time::Duration;
-use request_packets::request_packet::RequestPacket;
+use packets::packet::Packet;
+use packets::ping::Ping;
 
 
 fn main() {
@@ -25,7 +25,7 @@ fn main() {
         String::from("router.bittorrent.com:6881")
     ];
 
-    let ping_request = PingRequest::new(String::from("abcdefghij0123456789")); 
+    let ping_request = Ping::new(String::from("abcdefghij0123456789")); 
     
     // set up socket
     let socket = UdpSocket::bind("0.0.0.0:33333").expect("failed to bind host socket");
