@@ -1,14 +1,14 @@
-pub mod queries;
+pub mod request_packets;
 
 #[macro_use] extern crate clap;
 
 use clap::App;
 use ansi_term::Colour;
 use ansi_term::Style;
-use queries::PingRequest;
+use request_packets::ping_request::PingRequest;
 use std::net::UdpSocket;
 use std::time::Duration;
-use crate::queries::RequestPacket;
+use request_packets::request_packet::RequestPacket;
 
 
 fn main() {
