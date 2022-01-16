@@ -1,5 +1,3 @@
-
-
 // RoutingTable
 pub struct RoutingTableNode {
     // bucket
